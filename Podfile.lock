@@ -1,0 +1,20 @@
+PODS:
+  - Alamofire (5.5.0)
+  - OCMock (2.0.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 5.5)
+  - OCMock (~> 2.0.1)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - OCMock
+
+SPEC CHECKSUMS:
+  Alamofire: 1c4fb5369c3fe93d2857c780d8bbe09f06f97e7c
+  OCMock: 7a839b55abfb78e8ec3bf6eaa3cdcc567ac71d2a
+
+PODFILE CHECKSUM: 77084ed072b18c789e0077b6ad1dbbeeeb59e430
+
+COCOAPODS: 1.11.2

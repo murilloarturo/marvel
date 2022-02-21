@@ -3,12 +3,27 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '13.0'
 inhibit_all_warnings!
 
-target 'MarvelSuperheroes' do
+def networking
   pod 'Alamofire', '~> 5.5'
+end
+
+def rx
+  pod 'RxSwift', '6.5.0'
+  pod 'RxCocoa', '6.5.0'
+end
+
+def core
+  networking
+  rx
+end
+
+target 'MarvelSuperheroes' do
+  core
 
   target 'MarvelSuperheroesTests' do
     inherit! :search_paths
-    pod 'OCMock', '~> 2.0.1'
+    pod 'RxBlocking', '6.5.0'
+    pod 'RxTest', '6.5.0'
   end
 end
 

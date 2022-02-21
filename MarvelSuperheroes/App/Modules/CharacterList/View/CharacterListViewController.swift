@@ -6,8 +6,17 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+
+enum CharacterListViewAction {
+    case didScrollToBottom
+}
 
 class CharacterListViewController: UIViewController {
+    @IBOutlet private weak var collectionView: UICollectionView!
+    private let dataSource = CharacterListDataSource()
+    private let disposeBag = DisposeBag()
     private let presenter: CharacterListFlowPresentable
     
     init(presenter: CharacterListFlowPresentable, bundle: Bundle? = Bundle.main) {
@@ -22,7 +31,30 @@ class CharacterListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        setup()
+    }
+}
+
+private extension CharacterListViewController {
+    func setup() {
+        title = "Characters"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        dataSource.collectionView = collectionView
+        bind()
     }
     
+    func bind() {
+        presenter
+            .items
+            .drive(onNext: { [weak self] items in
+                self?.dataSource.insertNewItems(items)
+            })
+            .disposed(by: disposeBag)
+        dataSource
+            .actionSubject
+            .subscribe(onNext: { [weak self] action in
+                self?.presenter.handle(action: action)
+            })
+            .disposed(by: disposeBag)
+    }
 }

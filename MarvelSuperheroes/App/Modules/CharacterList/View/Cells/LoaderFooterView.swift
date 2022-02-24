@@ -8,10 +8,9 @@
 import UIKit
 
 class LoaderFooterView: UICollectionReusableView {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
+    func animate(_ animate: Bool) {
+        animate ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
+    }
 }

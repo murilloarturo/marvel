@@ -8,43 +8,105 @@
 import RxSwift
 import RxCocoa
 
+typealias CharacterListUpdate = (items: [Character], isFirstPage: Bool)
+
 protocol CharacterListFlowInteractable {
-    var data: Observable<CharacterList> { get }
-    func fetchMoreCharacters()
+    var dataStream: Observable<CharacterListUpdate> { get }
+    var isWorking: Observable<Bool> { get }
+    var canLoadMore: Bool { get }
+        
+    func loadMore()
+    func filter(_ text: String?)
+    func search(_ text: String?)
 }
 
 final class CharacterListFlowInteractor: CharacterListFlowInteractable {
-    private var offset: Int = 0
-    private let limit: Int = 20
-    private let server: CharacterServer
-    private let dataSubject = BehaviorSubject<CharacterList?>(value: nil)
+    private var isBusy = BehaviorRelay<Bool>(value: false)
+    private var queryString: String?
+    private var startingByString: String?
+    private var data: CharacterList?
     private let disposeBag = DisposeBag()
-    private var isBusy = false
-    
-    var data: Observable<CharacterList> {
-        return dataSubject.asObservable().compactMap{ $0 }
+    private var dataStreamSubject = BehaviorSubject<CharacterListUpdate>(value: ([], false))
+    @Dependency private var server: CharacterServer?
+    var canLoadMore: Bool {
+        return server?.canLoadMore ?? false
+    }
+    var dataStream: Observable<CharacterListUpdate> {
+        return dataStreamSubject.asObservable()
+    }
+    var isWorking: Observable<Bool> {
+        return isBusy.asObservable()
     }
     
-    init(server: CharacterServer = CharacterNetworker()) {
-        self.server = server
-        
-        fetchMoreCharacters()
+    init() {
+        requestNewPageOfCharacters()
     }
     
-    func fetchMoreCharacters() {
-        guard !isBusy else { return }
-        isBusy = true
-        server
-            .getCharacters(offset: offset, limit: limit)
+    func loadMore() {
+        requestMoreCharacters()
+    }
+    
+    func filter(_ text: String?) {
+        startingByString = text
+        requestNewPageOfCharacters()
+    }
+    
+    func search(_ text: String?) {
+        let newText = text ?? ""
+        queryString = newText.isEmpty ? nil : newText
+        requestNewPageOfCharacters()
+    }
+}
+
+private extension CharacterListFlowInteractor {
+    func getQueryParameter() -> String {
+        return queryString ?? startingByString ?? ""
+    }
+    
+    func requestNewPageOfCharacters() {
+        isBusy.accept(true)
+        server = DependencyContainer.resolve()
+        server?
+            .getCharacters(withQuery: getQueryParameter())
             .subscribe(onSuccess: { [weak self] characters in
-                self?.offset += characters.items.results.count
-                self?.dataSubject.onNext(characters)
-                self?.isBusy = false
+                guard let self = self else { return }
+                self.data = characters
+                self.dataStreamSubject.onNext((characters.items.results, true))
+                self.isBusy.accept(false)
             }, onFailure: { [weak self] error in
-                print(error)
-                self?.dataSubject.onError(error)
-                self?.isBusy = false
+                self?.dataStreamSubject.onError(error)
+                self?.isBusy.accept(false)
             })
             .disposed(by: disposeBag)
     }
+    
+    func requestMoreCharacters() {
+        guard canLoadMore else { return }
+        server?
+            .getCharacters(withQuery: getQueryParameter())
+            .subscribe(onSuccess: { [weak self] characters in
+                guard let self = self else { return }
+                self.data?.items.append(collection: characters.items)
+                self.dataStreamSubject.onNext((characters.items.results, false))
+            }, onFailure: { [weak self] error in
+                self?.dataStreamSubject.onError(error)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+//    private func search(text: String, from server: CharacterServer?) {
+//        guard !isBusy.value && !text.isEmpty else { return }
+//        isBusy.accept(true)
+//        server?
+//            .getCharacters(withQuery: text)
+//            .subscribe(onSuccess: { [weak self] characters in
+//                guard let self = self else { return }
+//                self.dataStreamSubject.onNext((characters.items.results, false))
+//                self.isBusy.accept(false)
+//            }, onFailure: { [weak self] error in
+//                self?.dataStreamSubject.onError(error)
+//                self?.isBusy.accept(false)
+//            })
+//            .disposed(by: disposeBag)
+//    }
 }

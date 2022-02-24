@@ -1,5 +1,5 @@
 //
-//  UICollectionView+Cells.swift
+//  UICollectionView+Utils.swift
 //  MarvelSuperheroes
 //
 //  Created by Arturo Murillo on 2/20/22.
@@ -46,5 +46,12 @@ extension UICollectionView {
 
     func containsIndexPath(_ indexPath: IndexPath) -> Bool {
         return indexPath.section < numberOfSections && indexPath.row < numberOfItems(inSection: indexPath.section)
+    }
+}
+
+extension UICollectionView {
+    func scrollToTop() {
+        let point = CGPoint(x: 0, y: -contentInset.top)
+        setContentOffset(point, animated: true)
     }
 }

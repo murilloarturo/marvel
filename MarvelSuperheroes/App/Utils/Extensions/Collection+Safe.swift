@@ -1,5 +1,5 @@
 //
-//  Utils.swift
+//  Collection+Safe.swift
 //  MarvelSuperheroes
 //
 //  Created by Arturo Murillo on 2/20/22.

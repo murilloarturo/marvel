@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  MarvelSuperheroes
+
+  Created by Arturo Murillo on 2/22/22.
+  
+*/
+
+"abc" = "ABC";
+"superheroes" = "Superheroes";
+"noHeroesFound" = "No heroes found";

@@ -9,9 +9,16 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol CharacterListDataSourceDelegate: AnyObject {
+    var canLoadMore: Bool { get }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView)
+    func loadMore()
+}
+
 final class CharacterListDataSource: NSObject {
     private var items: [CharacterSectionItem] = []
-    let actionSubject = PublishSubject<CharacterListViewAction>()
+    weak var delegate: CharacterListDataSourceDelegate?
     weak var collectionView: UICollectionView? {
         didSet {
             setupCollectionView()
@@ -19,6 +26,29 @@ final class CharacterListDataSource: NSObject {
     }
     
     func insertNewItems(_ newItems: [CharacterSectionItem]) {
+        if items.isEmpty {
+            appendNewItems(newItems)
+            return
+        }
+        let hasToReloadOnly = newItems.count >= items.count
+        if hasToReloadOnly {
+            items = newItems
+            collectionView?.reloadData()
+        } else {
+            var deleteIndexPaths: [IndexPath] = []
+            for i in newItems.count...items.count - 1 {
+                deleteIndexPaths.append(IndexPath(row: i, section: 0))
+            }
+            items = newItems
+            collectionView?.performBatchUpdates({ [weak collectionView] in
+                collectionView?.deleteItems(at: deleteIndexPaths)
+            }, completion: { [weak self] _ in
+                self?.collectionView?.reloadData()
+            })
+        }
+    }
+    
+    func appendNewItems(_ newItems: [CharacterSectionItem]) {
         var indexPaths: [IndexPath] = []
         let currentIndex: Int = items.count
         newItems.enumerated().forEach { item in
@@ -26,7 +56,6 @@ final class CharacterListDataSource: NSObject {
         }
         items.append(contentsOf: newItems)
         collectionView?.performBatchUpdates({ [weak collectionView] in
-            
             collectionView?.insertItems(at: indexPaths)
         }, completion: { [weak collectionView] _ in
             collectionView?.reloadData()
@@ -39,7 +68,10 @@ final class CharacterListDataSource: NSObject {
         for cellType in cells {
             collectionView.registerCell(cellType: cellType)
         }
-        collectionView.registerSupplementaryView(reusableViewType: LoaderFooterView.self, kind: UICollectionView.elementKindSectionFooter)
+        let reusableViews: [UICollectionReusableView.Type] = [LoaderFooterView.self, EmptyCell.self]
+        for view in reusableViews {
+            collectionView.registerSupplementaryView(reusableViewType: view, kind: UICollectionView.elementKindSectionFooter)
+        }
         collectionView.dataSource = self
         collectionView.delegate = self
     }
@@ -59,7 +91,8 @@ extension CharacterListDataSource: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
+        let count = items.count
+        return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -69,29 +102,44 @@ extension CharacterListDataSource: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueSupplementaryView(reusableViewType: LoaderFooterView.self, ofKind: kind, indexPath: indexPath)
-        return view
+        let canLoadMore = delegate?.canLoadMore ?? false
+        if canLoadMore {
+            let view = collectionView.dequeueSupplementaryView(reusableViewType: LoaderFooterView.self, ofKind: kind, indexPath: indexPath)
+            return view
+        } else {
+            let cell = collectionView.dequeueSupplementaryView(reusableViewType: EmptyCell.self, ofKind: kind, indexPath: indexPath)
+            cell.update(with: LocalizableString.noHeroesFound.localized)
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == items.count - 10 {
-            print("fetch next page")
-            actionSubject.onNext(.didScrollToBottom)
+            delegate?.loadMore()
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-        if elementKind == UICollectionView.elementKindSectionFooter {
-            print("did scroll to bottom")
-//            delegate?.didScrollToBottom()
-            actionSubject.onNext(.didScrollToBottom)
+        if let loaderView = view as? LoaderFooterView {
+            loaderView.animate(true)
         }
     }
 }
 
 extension CharacterListDataSource: UICollectionViewDelegateFlowLayout {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        delegate?.scrollViewWillBeginDragging(scrollView)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: 50)
+        let canLoadMore = delegate?.canLoadMore ?? false
+        if canLoadMore {
+            return CGSize(width: collectionView.bounds.width, height: 40)
+        } else if items.isEmpty {
+            return CGSize(width: collectionView.bounds.width, height: 200)
+        } else {
+            return .zero
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

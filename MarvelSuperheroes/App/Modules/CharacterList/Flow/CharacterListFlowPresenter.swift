@@ -58,6 +58,9 @@ final class CharacterListFlowPresenter: CharacterListFlowPresentable {
             interactor.filter(text)
         case .search(text: let text):
             interactor.search(text)
+        case .didSelect(let index):
+            guard let model = interactor.getCharacter(at: index) else { return }
+            router.route(to: .showDetail(model: model))
         }
     }
     

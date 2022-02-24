@@ -35,4 +35,27 @@ extension UIView {
         layer.shadowRadius = radius
         layer.masksToBounds = false
     }
+    
+    func insertBlurredView() {
+        if !UIAccessibility.isReduceTransparencyEnabled {
+            backgroundColor = .clear
+            let blurEffect = UIBlurEffect(style: .regular)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = bounds
+            insertSubview(blurEffectView, at: 0)
+            blurEffectView.bindLayoutToSuperView()
+        } else {
+            backgroundColor = DesignSystem.Color.background
+        }
+    }
+    
+    func setupRoundCorners(radius: CGFloat,
+                           corners: CACornerMask = [.layerMaxXMaxYCorner,
+                                                    .layerMaxXMinYCorner,
+                                                    .layerMinXMaxYCorner,
+                                                    .layerMinXMinYCorner]) {
+        layer.cornerRadius = radius
+        layer.maskedCorners = corners
+        layer.masksToBounds = true
+    }
 }

@@ -13,6 +13,7 @@ enum CharacterListViewAction {
     case loadMore
     case search(text: String?)
     case filterBy(text: String?)
+    case didSelect(index: Int)
 }
 
 class CharacterListViewController: UIViewController {
@@ -42,6 +43,12 @@ class CharacterListViewController: UIViewController {
 
         setup()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.tintColor = DesignSystem.Color.label
+    }
 }
 
 private extension CharacterListViewController {
@@ -55,7 +62,6 @@ private extension CharacterListViewController {
     
     func setup() {
         searchBar.delegate = self
-        navigationController?.navigationBar.tintColor = DesignSystem.Color.label
         filterContainerView.setupShadow(color: DesignSystem.Color.label, opacity: 0.3, radius: 6, offset: CGSize(width: -6, height: 6))
         filterView.setup(with: .abc)
         filterContainerView.addSubview(filterView)
@@ -116,11 +122,8 @@ private extension CharacterListViewController {
     }
     
     func setupNavigationItem() {
-        let rightButton = UIBarButtonItem(image: ImageCatalog.filter.image?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(didTapFilter))
-        navigationItem.rightBarButtonItem = rightButton
-        
-        let leftButton = UIBarButtonItem(image: ImageCatalog.darkMode.image?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(didTapDarkMode))
-        navigationItem.leftBarButtonItem = leftButton
+        setNavigationButton(image: ImageCatalog.filter.image, target: self, action: #selector(didTapFilter), location: .right)
+        setNavigationButton(image: ImageCatalog.darkMode.image, target: self, action: #selector(didTapDarkMode), location: .left)
     }
     
     @objc func didTapDarkMode(_ button: UIBarButtonItem) {
@@ -171,6 +174,10 @@ extension CharacterListViewController: CharacterListDataSourceDelegate {
     
     func loadMore() {
         presenter.handle(action: .loadMore)
+    }
+    
+    func didSelectItem(at index: Int) {
+        presenter.handle(action: .didSelect(index: index))
     }
 }
 

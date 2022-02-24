@@ -12,6 +12,7 @@ import RxCocoa
 protocol CharacterListDataSourceDelegate: AnyObject {
     var canLoadMore: Bool { get }
     
+    func didSelectItem(at index: Int)
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView)
     func loadMore()
 }
@@ -123,6 +124,10 @@ extension CharacterListDataSource: UICollectionViewDataSource {
         if let loaderView = view as? LoaderFooterView {
             loaderView.animate(true)
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.didSelectItem(at: indexPath.row)
     }
 }
 

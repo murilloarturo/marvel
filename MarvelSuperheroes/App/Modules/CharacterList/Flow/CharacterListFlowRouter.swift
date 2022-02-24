@@ -9,6 +9,7 @@ import UIKit
 
 enum CharacterListRoute {
     case start(presenter: CharacterListFlowPresentable)
+    case showDetail(model: Character)
 }
 
 protocol CharacterListFlowRoutable {
@@ -27,6 +28,8 @@ final class CharacterListFlowRouter: CharacterListFlowRoutable {
         switch route {
         case .start(let presenter):
             showListViewController(presenter: presenter)
+        case .showDetail(let model):
+            CharacterDetailFlowModule(model: model, navigation: baseViewController as? UINavigationController).start()
         }
     }
     

@@ -15,6 +15,7 @@ protocol CharacterListFlowInteractable {
     var isWorking: Observable<Bool> { get }
     var canLoadMore: Bool { get }
         
+    func getCharacter(at index: Int) -> Character?
     func loadMore()
     func filter(_ text: String?)
     func search(_ text: String?)
@@ -56,6 +57,10 @@ final class CharacterListFlowInteractor: CharacterListFlowInteractable {
         let newText = text ?? ""
         queryString = newText.isEmpty ? nil : newText
         requestNewPageOfCharacters()
+    }
+    
+    func getCharacter(at index: Int) -> Character? {
+        return data?.items.results[safe: index]
     }
 }
 

@@ -14,7 +14,12 @@ final class DesignSystem {
     }
     
     enum Color {
-        public static let label: UIColor = {
+        static let white: UIColor = {
+            return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
+                return UIColor.white
+            }
+        }()
+        static let label: UIColor = {
             return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
                         if UITraitCollection.userInterfaceStyle == .dark {
                             return UIColor.white
@@ -23,7 +28,7 @@ final class DesignSystem {
                         }
                     }
         }()
-        public static let labelSelected: UIColor = {
+        static let labelSelected: UIColor = {
             return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
                 if UITraitCollection.userInterfaceStyle == .dark {
                     return UIColor.black
@@ -32,9 +37,14 @@ final class DesignSystem {
                 }
             }
         }()
-        public static let separator: UIColor = UIColor.systemGray3
-        public static let background: UIColor = UIColor.systemGray6
-        public static let backgroundSelected: UIColor = UIColor.systemGray2
+        static let separator: UIColor = UIColor.systemGray3
+        static let background: UIColor = UIColor.systemGray6
+        static let backgroundSelected: UIColor = UIColor.systemGray2
+    }
+    
+    enum Font {
+        static let title: UIFont = UIFont.boldSystemFont(ofSize: 24)
+        static let subtitle: UIFont = UIFont.systemFont(ofSize: 16)
     }
 }
 

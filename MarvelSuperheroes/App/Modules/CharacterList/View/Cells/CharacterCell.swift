@@ -37,15 +37,7 @@ class CharacterCell: UICollectionViewCell {
         nameLabel.textColor = DesignSystem.Color.label
         nameLabel.adjustsFontSizeToFitWidth = true
         nameLabel.minimumScaleFactor = 0.2
-        if !UIAccessibility.isReduceTransparencyEnabled {
-            labelContainerView.backgroundColor = .clear
-            let blurEffect = UIBlurEffect(style: .regular)
-            let blurEffectView = UIVisualEffectView(effect: blurEffect)
-            blurEffectView.frame = labelContainerView.bounds
-            labelContainerView.insertSubview(blurEffectView, at: 0)
-            blurEffectView.bindLayoutToSuperView()
-        } else {
-            labelContainerView.backgroundColor = DesignSystem.Color.background
-        }
+        labelContainerView.insertBlurredView()
+        setupRoundCorners(radius: 20)
     }
 }

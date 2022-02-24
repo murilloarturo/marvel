@@ -13,6 +13,21 @@ enum NavigationButtonLocation {
 }
 
 extension UIViewController {
+    func setupCustomBackButton() {
+        let button = BlurredButton(frame: .zero)
+        button.selector = #selector(didTapBackButton)
+        button.setup(image: ImageCatalog.backButton.image)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+    }
+    
+    @objc func didTapBackButton() {
+        if let navigation = navigationController {
+            navigation.popViewController(animated: true)
+        } else {
+            dismiss(animated: true, completion: nil)
+        }
+    }
+    
     func setNavigationButton(title: String? = nil,
                              image: UIImage? = nil,
                              target: Any? = self,
@@ -22,7 +37,7 @@ extension UIViewController {
         if let title = title {
             button = UIBarButtonItem(title: title, style: .plain, target: target, action: action)
         } else {
-            button = UIBarButtonItem(image: image, style: .plain, target: target, action: action)
+            button = UIBarButtonItem(image: image?.withRenderingMode(.alwaysTemplate), style: .plain, target: target, action: action)
         }
         switch location {
         case .left:

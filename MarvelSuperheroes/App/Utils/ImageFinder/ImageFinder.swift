@@ -8,6 +8,7 @@
 import UIKit
 
 enum ImageCatalog: String {
+    case backButton
     case filter
     case darkMode
     

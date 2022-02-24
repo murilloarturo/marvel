@@ -47,6 +47,7 @@ final class CharacterListFlowInteractor: CharacterListFlowInteractable {
     }
     
     func filter(_ text: String?) {
+        queryString = nil
         startingByString = text
         requestNewPageOfCharacters()
     }

@@ -5,6 +5,7 @@ inhibit_all_warnings!
 
 def networking
   pod 'Alamofire', '~> 5.5'
+  pod 'Nuke', '~> 9.0'
 end
 
 def rx

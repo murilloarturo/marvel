@@ -46,8 +46,12 @@ struct Character: Codable {
 }
 
 struct ImageURL: Codable {
-    let path: URL?
+    let path: String
     let fileExtension: String
+    
+    var url: URL? {
+        return URL(string: "\(path).\(fileExtension)")
+    }
     
     enum CodingKeys: String, CodingKey {
         case path

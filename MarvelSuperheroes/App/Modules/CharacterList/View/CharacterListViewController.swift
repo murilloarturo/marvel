@@ -26,6 +26,7 @@ class CharacterListViewController: UIViewController {
     private let filterDataSource = CharacterListDataSource()
     private let disposeBag = DisposeBag()
     private let presenter: CharacterListFlowPresentable
+    private var isDark = false
     
     init(presenter: CharacterListFlowPresentable, bundle: Bundle? = Bundle.main) {
         self.presenter = presenter
@@ -53,8 +54,9 @@ private extension CharacterListViewController {
     }
     
     func setup() {
-        navigationController?.navigationBar.tintColor = UIColor.black
-        filterContainerView.setupShadow(color: UIColor.black, opacity: 0.3, radius: 6, offset: CGSize(width: -6, height: 6))
+        searchBar.delegate = self
+        navigationController?.navigationBar.tintColor = DesignSystem.Color.label
+        filterContainerView.setupShadow(color: DesignSystem.Color.label, opacity: 0.3, radius: 6, offset: CGSize(width: -6, height: 6))
         filterView.setup(with: .abc)
         filterContainerView.addSubview(filterView)
         filterView.bindLayoutToSuperView()
@@ -80,13 +82,12 @@ private extension CharacterListViewController {
                 guard let self = self else { return }
                 self.presenter.handle(action: .filterBy(text: filter))
                 self.hideFilterView(animated: true)
-                self.searchBar.text = nil
                 self.searchBar.resignFirstResponder()
             })
             .disposed(by: disposeBag)
         searchBar
-            .rx.text
-            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .rx.text.orEmpty
+            .throttle(.seconds(1), latest: true, scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] text in
                 guard let self = self else { return }
@@ -115,8 +116,15 @@ private extension CharacterListViewController {
     }
     
     func setupNavigationItem() {
-        let button = UIBarButtonItem(image: ImageCatalog.filter.image?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(didTapFilter))
-        navigationItem.rightBarButtonItem = button
+        let rightButton = UIBarButtonItem(image: ImageCatalog.filter.image?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(didTapFilter))
+        navigationItem.rightBarButtonItem = rightButton
+        
+        let leftButton = UIBarButtonItem(image: ImageCatalog.darkMode.image?.withRenderingMode(.alwaysTemplate), style: .plain, target: self, action: #selector(didTapDarkMode))
+        navigationItem.leftBarButtonItem = leftButton
+    }
+    
+    @objc func didTapDarkMode(_ button: UIBarButtonItem) {
+        DesignSystem.changeDarkMode()
     }
     
     @objc func didTapFilter(_ button: UIBarButtonItem) {

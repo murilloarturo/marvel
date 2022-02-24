@@ -9,6 +9,7 @@ import UIKit
 
 enum ImageCatalog: String {
     case filter
+    case darkMode
     
     var image: UIImage? {
         return UIImage(named: rawValue)

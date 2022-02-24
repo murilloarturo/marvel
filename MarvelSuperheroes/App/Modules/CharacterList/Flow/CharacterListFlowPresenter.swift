@@ -65,7 +65,7 @@ final class CharacterListFlowPresenter: CharacterListFlowPresentable {
         interactor
             .dataStream
             .subscribe(onNext: { [weak self] dataUpdate in
-                let items = dataUpdate.items.map{ CharacterSectionItem(name: $0.name, image: $0.thumbnail.path) }
+                let items = dataUpdate.items.map{ CharacterSectionItem(name: $0.name, image: $0.thumbnail.url) }
                 self?.stateSubject.onNext(.reload(items: items, isFirstPage: dataUpdate.isFirstPage))
             })
             .disposed(by: disposeBag)

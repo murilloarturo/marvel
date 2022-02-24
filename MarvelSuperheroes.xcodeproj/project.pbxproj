@@ -44,6 +44,8 @@
 		6966589327C79BEE00FD5C96 /* CharacterListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6913F8C627C2EE60005E445B /* CharacterListViewController.swift */; };
 		6966589627C7A72B00FD5C96 /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6966589527C7A72B00FD5C96 /* LoaderView.swift */; };
 		6966589827C7A73C00FD5C96 /* LoaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6966589727C7A73C00FD5C96 /* LoaderView.xib */; };
+		6966589B27C7E9B700FD5C96 /* UIImageView+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6966589A27C7E9B600FD5C96 /* UIImageView+Networking.swift */; };
+		6966589E27C7F75000FD5C96 /* Design System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6966589D27C7F75000FD5C96 /* Design System.swift */; };
 		69B10ACA27C56FCA00388F6F /* LocalizableString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B10AC927C56FCA00388F6F /* LocalizableString.swift */; };
 		69B10ACC27C56FE500388F6F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69B10ACB27C56FE500388F6F /* Localizable.strings */; };
 		69B10ACE27C5743700388F6F /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B10ACD27C5743700388F6F /* UIViewController+Utils.swift */; };
@@ -112,6 +114,8 @@
 		6966589127C79A2700FD5C96 /* ImageFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFinder.swift; sourceTree = "<group>"; };
 		6966589527C7A72B00FD5C96 /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
 		6966589727C7A73C00FD5C96 /* LoaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoaderView.xib; sourceTree = "<group>"; };
+		6966589A27C7E9B600FD5C96 /* UIImageView+Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Networking.swift"; sourceTree = "<group>"; };
+		6966589D27C7F75000FD5C96 /* Design System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Design System.swift"; sourceTree = "<group>"; };
 		69B10AC927C56FCA00388F6F /* LocalizableString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableString.swift; sourceTree = "<group>"; };
 		69B10ACB27C56FE500388F6F /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		69B10ACD27C5743700388F6F /* UIViewController+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
@@ -318,6 +322,7 @@
 		6913F8DF27C31C9C005E445B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				6966589C27C7F74400FD5C96 /* Design System */,
 				6966589027C79A1D00FD5C96 /* ImageFinder */,
 				6966587F27C724DE00FD5C96 /* Components */,
 				69B10ACF27C590C300388F6F /* DI */,
@@ -351,6 +356,7 @@
 				6966588927C725FD00FD5C96 /* UIView+Helpers.swift */,
 				6913F8E027C31CAC005E445B /* UICollectionView+Utils.swift */,
 				69B10ACD27C5743700388F6F /* UIViewController+Utils.swift */,
+				6966589A27C7E9B600FD5C96 /* UIImageView+Networking.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -390,6 +396,14 @@
 				6966589727C7A73C00FD5C96 /* LoaderView.xib */,
 			);
 			path = Loader;
+			sourceTree = "<group>";
+		};
+		6966589C27C7F74400FD5C96 /* Design System */ = {
+			isa = PBXGroup;
+			children = (
+				6966589D27C7F75000FD5C96 /* Design System.swift */,
+			);
+			path = "Design System";
 			sourceTree = "<group>";
 		};
 		69B10ACF27C590C300388F6F /* DI */ = {
@@ -611,8 +625,10 @@
 				6913F8C527C2EE4D005E445B /* CharacterListFlowPresenter.swift in Sources */,
 				6913F8C327C2EE42005E445B /* CharacterListFlowRouter.swift in Sources */,
 				6966589227C79A2700FD5C96 /* ImageFinder.swift in Sources */,
+				6966589B27C7E9B700FD5C96 /* UIImageView+Networking.swift in Sources */,
 				6913F8E327C31E68005E445B /* Collection+Safe.swift in Sources */,
 				6913F8C827C2EE60005E445B /* CharacterListViewController.swift in Sources */,
+				6966589E27C7F75000FD5C96 /* Design System.swift in Sources */,
 				6913F8CE27C2F4DA005E445B /* Server.swift in Sources */,
 				6966589627C7A72B00FD5C96 /* LoaderView.swift in Sources */,
 				6913F8D627C303D4005E445B /* ServerEndpoint.swift in Sources */,

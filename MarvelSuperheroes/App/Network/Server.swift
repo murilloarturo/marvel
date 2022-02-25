@@ -9,18 +9,18 @@ import Alamofire
 import RxSwift
 
 protocol Server {
-    func single<Object: Codable>(request: ServerRequest) -> Single<Object>
+    func single<T: Codable>(request: ServerRequest) -> Single<ServerResponse<T>>
 }
 
 final class Networker: Server {
-    func single<Object: Codable>(request: ServerRequest) -> Single<Object> {
+    func single<T: Codable>(request: ServerRequest) -> Single<ServerResponse<T>> {
         return .create { single in
             AF.request(request.url,
                        method: request.method,
                        parameters: request.params.build(),
                        headers: request.headers)
                 .validate()
-                .responseDecodable(of: Object.self) { response in
+                .responseDecodable(of: ServerResponse<T>.self) { response in
                     switch response.result {
                     case .success(let object):
                         single(.success(object))

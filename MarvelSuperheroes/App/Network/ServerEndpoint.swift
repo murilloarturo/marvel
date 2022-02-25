@@ -9,6 +9,7 @@ import Foundation
 
 enum ServerEndpoint {
     case characters
+    case comics(characterId: String)
     
     private var baseURL: String {
         return "https://gateway.marvel.com/v1/public"
@@ -18,6 +19,8 @@ enum ServerEndpoint {
         switch self {
         case .characters:
             return URL(staticString: "\(baseURL)/characters")
+        case .comics(let characterId):
+            return URL(staticString: "\(baseURL)/characters/\(characterId)/comics")
         }
     }
 }

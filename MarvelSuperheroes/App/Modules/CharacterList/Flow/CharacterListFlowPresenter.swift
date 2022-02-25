@@ -25,7 +25,6 @@ protocol CharacterListFlowPresentable {
 }
 
 final class CharacterListFlowPresenter: CharacterListFlowPresentable {
-    private var characters: CharacterList?
     private let interactor: CharacterListFlowInteractable
     private let router: CharacterListFlowRoutable
     private let stateSubject = BehaviorSubject<CharacterListFlowPresenterState>(value: .isLoading(true))

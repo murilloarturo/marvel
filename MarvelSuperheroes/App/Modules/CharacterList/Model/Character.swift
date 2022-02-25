@@ -7,28 +7,6 @@
 
 import Foundation
 
-struct CharacterList: Codable {
-    var copyright: String?
-    var items: CollectionContainer<Character>
-    
-    enum CodingKeys: String, CodingKey {
-        case copyright = "attributionText"
-        case items = "data"
-    }
-}
-
-struct CollectionContainer<T: Codable>: Codable {
-    var results: [T]
-    
-    enum CodingKeys: String, CodingKey {
-        case results
-    }
-    
-    mutating func append(collection: CollectionContainer<T>) {
-        results.append(contentsOf: collection.results)
-    }
-}
-
 struct Character: Codable {
     let id: Int
     let name: String

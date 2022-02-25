@@ -9,8 +9,11 @@ import Foundation
 
 final class DependencyInjectorModule {
     static func start() {
-        DependencyContainer.registerBuilder(for: CharacterServer.self) {
-            return CharacterNetworker()
+        DependencyContainer.registerBuilder(for: Server.self) {
+            return Networker()
+        }
+        DependencyContainer.registerBuilder(for: EndpointRequester.self) {
+            return EndpointNetWorker()
         }
     }
 }

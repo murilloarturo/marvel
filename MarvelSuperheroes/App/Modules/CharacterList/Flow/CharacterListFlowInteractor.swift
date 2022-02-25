@@ -9,6 +9,7 @@ import RxSwift
 import RxCocoa
 
 typealias CharacterListUpdate = (items: [Character], isFirstPage: Bool)
+typealias CharacterResponse = ServerResponse<Character>
 
 protocol CharacterListFlowInteractable {
     var dataStream: Observable<CharacterListUpdate> { get }
@@ -25,12 +26,13 @@ final class CharacterListFlowInteractor: CharacterListFlowInteractable {
     private var isBusy = BehaviorRelay<Bool>(value: false)
     private var queryString: String?
     private var startingByString: String?
-    private var data: CharacterList?
+    private var data: CharacterResponse?
     private let disposeBag = DisposeBag()
     private var dataStreamSubject = BehaviorSubject<CharacterListUpdate>(value: ([], false))
-    @Dependency private var server: CharacterServer?
+    @Dependency
+    private var networker: EndpointRequester?
     var canLoadMore: Bool {
-        return server?.canLoadMore ?? false
+        return networker?.canLoadMore ?? false
     }
     var dataStream: Observable<CharacterListUpdate> {
         return dataStreamSubject.asObservable()
@@ -44,19 +46,20 @@ final class CharacterListFlowInteractor: CharacterListFlowInteractable {
     }
     
     func loadMore() {
-        requestMoreCharacters()
+        requestNewPageOfCharacters()
     }
     
     func filter(_ text: String?) {
         queryString = nil
         startingByString = text
-        requestNewPageOfCharacters()
+        requestFirstPage()
     }
     
     func search(_ text: String?) {
         let newText = text ?? ""
         queryString = newText.isEmpty ? nil : newText
-        requestNewPageOfCharacters()
+        startingByString = nil
+        requestFirstPage()
     }
     
     func getCharacter(at index: Int) -> Character? {
@@ -65,19 +68,33 @@ final class CharacterListFlowInteractor: CharacterListFlowInteractable {
 }
 
 private extension CharacterListFlowInteractor {
-    func getQueryParameter() -> String {
-        return queryString ?? startingByString ?? ""
+    func getEndpoint() -> ServerEndpoint {
+        return .characters
+    }
+    
+    func getQueryParameter() -> [String: Any] {
+        var parameters: [String: Any] = ["orderBy": "name"]
+        let query = queryString ?? startingByString ?? ""
+        if !query.isEmpty {
+            parameters["nameStartsWith"] = query
+        }
+        return parameters
+    }
+    
+    func requestFirstPage() {
+        isBusy.accept(true)
+        data = nil
+        networker = DependencyContainer.resolve()
+        requestNewPageOfCharacters()
     }
     
     func requestNewPageOfCharacters() {
-        isBusy.accept(true)
-        server = DependencyContainer.resolve()
-        server?
-            .getCharacters(withQuery: getQueryParameter())
+        guard canLoadMore else { return }
+        networker?
+            .fetchData(Character.self, endpoint: getEndpoint(), params: getQueryParameter())
             .subscribe(onSuccess: { [weak self] characters in
                 guard let self = self else { return }
-                self.data = characters
-                self.dataStreamSubject.onNext((characters.items.results, true))
+                self.updateResponse(characters)
                 self.isBusy.accept(false)
             }, onFailure: { [weak self] error in
                 self?.dataStreamSubject.onError(error)
@@ -86,17 +103,13 @@ private extension CharacterListFlowInteractor {
             .disposed(by: disposeBag)
     }
     
-    func requestMoreCharacters() {
-        guard canLoadMore else { return }
-        server?
-            .getCharacters(withQuery: getQueryParameter())
-            .subscribe(onSuccess: { [weak self] characters in
-                guard let self = self else { return }
-                self.data?.items.append(collection: characters.items)
-                self.dataStreamSubject.onNext((characters.items.results, false))
-            }, onFailure: { [weak self] error in
-                self?.dataStreamSubject.onError(error)
-            })
-            .disposed(by: disposeBag)
+    func updateResponse(_ response: CharacterResponse) {
+        if self.data == nil {
+            self.data = response
+            dataStreamSubject.onNext((response.items.results, true))
+        } else {
+            self.data?.items.append(collection: response.items)
+            dataStreamSubject.onNext((response.items.results, false))
+        }
     }
 }

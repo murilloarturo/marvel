@@ -24,7 +24,7 @@ enum ServerKeys: String {
 }
 
 struct ServerRequestParams {
-    private let additionalParams: [String: Any]
+    var additionalParams: [String: Any]
     
     init(params: [String: Any]) {
         self.additionalParams = params

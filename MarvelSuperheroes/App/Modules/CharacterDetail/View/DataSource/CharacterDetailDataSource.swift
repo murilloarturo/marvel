@@ -10,7 +10,10 @@ import RxSwift
 import RxCocoa
 
 protocol CharacterDetailDataSourceDelegate: AnyObject {
+    var canLoadMore: Bool { get }
+    
     func didSelectAction(with url: URL?)
+    func loadMore()
 }
 
 final class CharacterDetailDataSource: NSObject {
@@ -109,7 +112,7 @@ extension CharacterDetailDataSource: UICollectionViewDelegateFlowLayout {
     func sectionItemSize(item: TitleSectionItem, maxWidth: CGFloat) -> CGSize {
         switch item.style {
         case .button:
-            return CGSize(width: maxWidth, height: 50)
+            return CGSize(width: maxWidth, height: 60)
         default:
             let padding: CGFloat = 20
             let height: CGFloat = item.title.height(withConstrainedWidth: maxWidth - padding, font: item.style.font)

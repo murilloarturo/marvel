@@ -10,8 +10,10 @@ import RxSwift
 import RxCocoa
 
 protocol CharacterDetailFlowPresentable {
+    var canLoadMore: Bool { get }
     var characterImage: Driver<URL?> { get }
     var items: Driver<[Any]> { get }
+    var newComics: Driver<[Comic]> { get }
     
     func handle(viewAction: CharacterDetailViewAction)
 }
@@ -26,6 +28,12 @@ final class CharacterDetailFlowPresenter: CharacterDetailFlowPresentable {
     }
     var items: Driver<[Any]> {
         return itemsSubject.asDriver(onErrorJustReturn: [])
+    }
+    var canLoadMore: Bool {
+        return interactor.canLoadMore
+    }
+    var newComics: Driver<[Comic]> {
+        return interactor.comics.filter{ !$0.isFirstPage }.map{ $0.items }.asDriver(onErrorJustReturn: [])
     }
     
     init(interactor: CharacterDetailFlowInteractable, router: CharacterDetailFlowRoutable) {
@@ -43,6 +51,8 @@ final class CharacterDetailFlowPresenter: CharacterDetailFlowPresentable {
         switch viewAction {
         case .openURL(let url):
             router.route(to: .showWebView(url: url))
+        case .loadMore:
+            interactor.loadMore()
         }
     }
 }
@@ -68,6 +78,9 @@ private extension CharacterDetailFlowPresenter {
             items.append(comics.items)
         }
         items.append(contentsOf: mapLinks(from: model))
+        if let copyRight = interactor.copyrightText {
+            items.append(TitleSectionItem(title: copyRight, style: .copyright))
+        }
         
         itemsSubject.accept(items)
     }

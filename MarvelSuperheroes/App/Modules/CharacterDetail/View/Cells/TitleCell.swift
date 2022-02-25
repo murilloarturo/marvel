@@ -11,6 +11,7 @@ enum TitleCellStyle {
     case title
     case subtitle
     case button
+    case copyright
     
     var font: UIFont {
         switch self {
@@ -18,7 +19,7 @@ enum TitleCellStyle {
             return DesignSystem.Font.title
         case .subtitle:
             return DesignSystem.Font.subtitle
-        case .button:
+        case .button, .copyright:
             return DesignSystem.Font.link
         }
     }
@@ -46,6 +47,9 @@ class TitleCell: UICollectionViewCell {
         switch text.style {
         case .button:
             label.textColor = DesignSystem.Color.link
+            label.textAlignment = .center
+        case .copyright:
+            label.textColor = DesignSystem.Color.label
             label.textAlignment = .center
         default:
             label.textColor = DesignSystem.Color.label

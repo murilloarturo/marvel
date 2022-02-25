@@ -10,6 +10,7 @@ import RxSwift
 
 enum CharacterDetailViewAction {
     case openURL(URL)
+    case loadMore
 }
 
 class CharacterDetailViewController: UIViewController {
@@ -62,6 +63,7 @@ private extension CharacterDetailViewController {
             .disposed(by: disposeBag)
         presenter
             .items
+            .skip(1)
             .do(onNext: { [weak self] _ in
                 self?.activityIndicator.stopAnimating()
                 self?.activityIndicator.isHidden = true
@@ -70,10 +72,24 @@ private extension CharacterDetailViewController {
                 self?.dataSource.items = items
             })
             .disposed(by: disposeBag)
+        presenter
+            .newComics
+            .drive(onNext: { [weak self] comics in
+                self?.dataSource.addComics(comics)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
 extension CharacterDetailViewController: CharacterDetailDataSourceDelegate {
+    var canLoadMore: Bool {
+        return presenter.canLoadMore
+    }
+    
+    func loadMore() {
+        presenter.handle(viewAction: .loadMore)
+    }
+    
     func didSelectAction(with url: URL?) {
         guard let url = url else { return }
         presenter.handle(viewAction: .openURL(url))

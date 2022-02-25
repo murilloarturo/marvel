@@ -14,7 +14,9 @@ typealias ComicsResponse = ServerResponse<Comic>
 protocol CharacterDetailFlowInteractable {
     var model: Observable<Character> { get }
     var comics: Observable<ComicsUpdate> { get }
+    var canLoadMore: Bool { get }
     
+    var copyrightText: String? { get }
     func loadMore()
 }
 
@@ -34,6 +36,9 @@ final class CharacterDetailFlowInteractor: CharacterDetailFlowInteractable {
     }
     var canLoadMore: Bool {
         return networker?.canLoadMore ?? false
+    }
+    var copyrightText: String? {
+        return response?.copyright ?? ""
     }
     
     init(character: Character) {

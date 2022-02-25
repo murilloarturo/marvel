@@ -8,9 +8,16 @@
 import Foundation
 
 enum LocalizableString: String {
+    //Common
+    case error
+    case ok
+    //Home
     case abc
     case superheroes
     case noHeroesFound
+    //Detail
+    case issue
+    case comics
     case comicsLink
     case detailLink
     case wikiLink

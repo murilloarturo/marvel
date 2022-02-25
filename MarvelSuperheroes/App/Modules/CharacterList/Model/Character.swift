@@ -46,11 +46,15 @@ enum LinkType: String, Codable {
 }
 
 struct Link: Codable {
-    var type: LinkType
+    var typeString: String
     var url: URL?
     
+    var type: LinkType {
+        return LinkType(rawValue: typeString) ?? .detail
+    }
+    
     enum CodingKeys: String, CodingKey {
-        case type
+        case typeString = "type"
         case url
     }
 }

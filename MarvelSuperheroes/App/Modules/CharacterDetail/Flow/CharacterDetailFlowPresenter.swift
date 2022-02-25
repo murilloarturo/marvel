@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxSwift
 import RxCocoa
 
 protocol CharacterDetailFlowPresentable {
@@ -18,19 +19,20 @@ protocol CharacterDetailFlowPresentable {
 final class CharacterDetailFlowPresenter: CharacterDetailFlowPresentable {
     private let interactor: CharacterDetailFlowInteractable
     private let router: CharacterDetailFlowRoutable
+    private let disposeBag = DisposeBag()
+    private let itemsSubject = BehaviorRelay<[Any]>(value: [])
     var characterImage: Driver<URL?> {
         return interactor.model.map{ $0.thumbnail.url }.asDriver(onErrorJustReturn: nil)
     }
     var items: Driver<[Any]> {
-        return interactor.model.map { [weak self] model in
-            return self?.mapModel(model) ?? []
-        }
-        .asDriver(onErrorJustReturn: [])
+        return itemsSubject.asDriver(onErrorJustReturn: [])
     }
     
     init(interactor: CharacterDetailFlowInteractable, router: CharacterDetailFlowRoutable) {
         self.interactor = interactor
         self.router = router
+        
+        bind()
     }
     
     func start() {
@@ -46,14 +48,28 @@ final class CharacterDetailFlowPresenter: CharacterDetailFlowPresentable {
 }
 
 private extension CharacterDetailFlowPresenter {
-    func mapModel(_ model: Character) -> [Any] {
+    func bind() {
+        Observable.combineLatest(interactor.model, interactor.comics.take(1))
+            .subscribe(onNext: { [weak self] items in
+                self?.mapModel(items.0, comics: items.1)
+            }, onError: { [weak self] error in
+                self?.router.route(to: .showError(error))
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func mapModel(_ model: Character, comics: ComicsUpdate) {
         var items: [Any] = []
         let title = TitleSectionItem(title: model.name, style: TitleCellStyle.title)
         items.append(title)
         let subtitle = TitleSectionItem(title: model.description, style: TitleCellStyle.subtitle)
         items.append(subtitle)
+        if comics.isFirstPage && !comics.items.isEmpty {
+            items.append(comics.items)
+        }
         items.append(contentsOf: mapLinks(from: model))
-        return items
+        
+        itemsSubject.accept(items)
     }
     
     func mapLinks(from model: Character) -> [Any] {
@@ -66,7 +82,7 @@ private extension CharacterDetailFlowPresenter {
                 title = LocalizableString.wikiLink.localized(with: [name])
             case .comiclink:
                 title = LocalizableString.comicsLink.localized(with: [name])
-            case .detail:
+            default:
                 title = LocalizableString.detailLink.localized(with: [name])
             }
             let button = TitleSectionItem(title: title, style: TitleCellStyle.button, action: link.url)

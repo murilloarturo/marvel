@@ -14,26 +14,30 @@ protocol CharacterDetailDataSourceDelegate: AnyObject {
 }
 
 final class CharacterDetailDataSource: NSObject {
+    private let comicsDataSource = ComicsDataSource()
     var items: [Any] = [] {
         didSet {
             collectionView?.reloadData()
         }
     }
-    weak var delegate: CharacterDetailDataSourceDelegate?
+    weak var delegate: CharacterDetailDataSourceDelegate? {
+        didSet {
+            comicsDataSource.delegate = delegate
+        }
+    }
     weak var collectionView: UICollectionView? {
         didSet {
             setupCollectionView()
         }
     }
     
+    func addComics(_ comics: [Comic]) {
+        comicsDataSource.append(comics)
+    }
+    
     private func setupCollectionView() {
         guard let collectionView = collectionView else { return }
-//        let layout = UICollectionViewFlowLayout()
-//        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-//        layout.scrollDirection = .vertical
-//        collectionView.collectionViewLayout = layout
-//        collectionView.
-        let cells: [UICollectionViewCell.Type] = [TitleCell.self]
+        let cells: [UICollectionViewCell.Type] = [TitleCell.self, HorizontalCell.self]
         for cellType in cells {
             collectionView.registerCell(cellType: cellType)
         }
@@ -61,9 +65,18 @@ extension CharacterDetailDataSource: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueCell(cellType: TitleCell.self, indexPath: indexPath)
-        cell.update(with: items[safe: indexPath.row])
-        return cell
+        switch items[safe: indexPath.row] {
+        case let comics as [Comic]:
+            let cell = collectionView.dequeueCell(cellType: HorizontalCell.self, indexPath: indexPath)
+            cell.update(title: LocalizableString.comics.localized)
+            comicsDataSource.collectionView = cell.collectionView
+            comicsDataSource.items = comics
+            return cell
+        default:
+            let cell = collectionView.dequeueCell(cellType: TitleCell.self, indexPath: indexPath)
+            cell.update(with: items[safe: indexPath.row])
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -86,6 +99,8 @@ extension CharacterDetailDataSource: UICollectionViewDelegateFlowLayout {
         switch item {
         case let sectionItem as TitleSectionItem:
             return sectionItemSize(item: sectionItem, maxWidth: maxWidth)
+        case is [Comic]:
+            return CGSize(width: maxWidth, height: 200)
         default:
             return .zero
         }

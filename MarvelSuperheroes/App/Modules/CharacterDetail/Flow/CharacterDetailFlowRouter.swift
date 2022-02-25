@@ -10,6 +10,7 @@ import UIKit
 enum CharacterDetailFlowRoute {
     case start(preseter: CharacterDetailFlowPresentable)
     case showWebView(url: URL)
+    case showError(Error)
 }
 
 protocol CharacterDetailFlowRoutable {
@@ -30,6 +31,10 @@ final class CharacterDetailFlowRouter: CharacterDetailFlowRoutable {
         case .showWebView(let url):
             let webView = WebViewController(url: url)
             navigation?.pushViewController(webView, animated: true)
+        case .showError(let error):
+            navigation?.topViewController?.presentAlert(title: LocalizableString.error.localized,
+                                                        message: error.localizedDescription,
+                                                        dismissAction: LocalizableString.ok.localized)
         }
     }
     

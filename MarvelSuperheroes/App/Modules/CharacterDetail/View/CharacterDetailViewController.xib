@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CharacterDetailViewController" customModule="MarvelSuperheroes" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicator" destination="wd1-mY-ds1" id="gIS-bh-Thw"/>
                 <outlet property="collectionView" destination="Gz8-FM-1SO" id="Ytr-AH-fJo"/>
                 <outlet property="imageView" destination="Wv7-d9-yGH" id="emV-jw-LEK"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -40,13 +41,18 @@
                     <variation key="heightClass=compact-widthClass=compact" axis="horizontal"/>
                     <variation key="heightClass=compact-widthClass=regular" axis="horizontal"/>
                 </stackView>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="wd1-mY-ds1">
+                    <rect key="frame" x="197" y="443" width="20" height="20"/>
+                </activityIndicatorView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="hU7-Cv-sYy" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="02H-p9-599"/>
+                <constraint firstItem="wd1-mY-ds1" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="7fF-jg-Gds"/>
                 <constraint firstItem="Wv7-d9-yGH" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="0.5" id="RNt-Is-vOV"/>
                 <constraint firstItem="Wv7-d9-yGH" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="0.4" id="cdh-1O-BHW"/>
+                <constraint firstItem="wd1-mY-ds1" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="guG-aK-YfN"/>
                 <constraint firstItem="hU7-Cv-sYy" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="jir-6t-9BD"/>
                 <constraint firstItem="hU7-Cv-sYy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kBq-2h-fE6"/>
                 <constraint firstAttribute="bottom" secondItem="hU7-Cv-sYy" secondAttribute="bottom" id="xO8-ae-fEn"/>

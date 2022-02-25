@@ -32,7 +32,9 @@ final class CharacterListFlowRouter: CharacterListFlowRoutable {
         case .showDetail(let model):
             CharacterDetailFlowModule(model: model, navigation: baseViewController as? UINavigationController).start()
         case .showError(let error):
-            baseViewController?.presentAlert(title: "Error", message: error.localizedDescription, dismissAction: "ok", dismissCompletion: nil, okAction: nil, okCompletion: nil)
+            baseViewController?.presentAlert(title: LocalizableString.error.localized,
+                                             message: error.localizedDescription,
+                                             dismissAction: LocalizableString.ok.localized)
         }
     }
     

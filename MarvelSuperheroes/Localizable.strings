@@ -6,9 +6,16 @@
   
 */
 
+//Common
+"error" = "Oops!!";
+"ok" = "ok";
+//Home
 "abc" = "ABC";
 "superheroes" = "Superheroes";
 "noHeroesFound" = "No heroes found";
+//Detail
+"issue" = "Issue Number: ";
+"comics" = "Comics";
 "comicsLink" = "Looking for other comics of %@?";
 "detailLink" = "Want to know more about %@?";
 "wikiLink" = "Check out the wiki page of %@";

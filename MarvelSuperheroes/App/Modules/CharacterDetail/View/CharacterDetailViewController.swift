@@ -13,6 +13,7 @@ enum CharacterDetailViewAction {
 }
 
 class CharacterDetailViewController: UIViewController {
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var collectionView: UICollectionView!
     private let dataSource = CharacterDetailDataSource()
@@ -43,6 +44,7 @@ class CharacterDetailViewController: UIViewController {
 
 private extension CharacterDetailViewController {
     func setup() {
+        activityIndicator.startAnimating()
         imageView.setupRoundCorners(radius: 40, corners: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner])
         dataSource.collectionView = collectionView
         dataSource.delegate = self
@@ -60,6 +62,10 @@ private extension CharacterDetailViewController {
             .disposed(by: disposeBag)
         presenter
             .items
+            .do(onNext: { [weak self] _ in
+                self?.activityIndicator.stopAnimating()
+                self?.activityIndicator.isHidden = true
+            })
             .drive(onNext: { [weak self] items in
                 self?.dataSource.items = items
             })

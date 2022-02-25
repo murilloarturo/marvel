@@ -12,6 +12,13 @@
 | --- | --- | --- | --- |
 | iOS 15.0+ | 5 | [CocoaPods](#cocoapods) | 1.0 |
 
+## How to Run the App
+1. Clone the project 
+2. Make sure you have [Cocoapods](https://cocoapods.org/) installed 
+3. Open a terminal, go to the root of the project, run 'pod install'
+4. Open 'MarvelSuperheroes.xcworkspace' in XCode
+5. Enjoy!
+
 ### Tools
 1. [Xcode](https://developer.apple.com/xcode/) Xcode 13
 2. [Swift](https://swift.org/)

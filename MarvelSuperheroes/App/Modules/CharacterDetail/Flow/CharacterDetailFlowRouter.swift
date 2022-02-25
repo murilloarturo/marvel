@@ -9,6 +9,7 @@ import UIKit
 
 enum CharacterDetailFlowRoute {
     case start(preseter: CharacterDetailFlowPresentable)
+    case showWebView(url: URL)
 }
 
 protocol CharacterDetailFlowRoutable {
@@ -26,6 +27,9 @@ final class CharacterDetailFlowRouter: CharacterDetailFlowRoutable {
         switch route {
         case .start(let preseter):
             start(presenter: preseter)
+        case .showWebView(let url):
+            let webView = WebViewController(url: url)
+            navigation?.pushViewController(webView, animated: true)
         }
     }
     

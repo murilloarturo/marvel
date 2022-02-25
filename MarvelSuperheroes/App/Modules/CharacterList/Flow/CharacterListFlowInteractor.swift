@@ -99,20 +99,4 @@ private extension CharacterListFlowInteractor {
             })
             .disposed(by: disposeBag)
     }
-    
-//    private func search(text: String, from server: CharacterServer?) {
-//        guard !isBusy.value && !text.isEmpty else { return }
-//        isBusy.accept(true)
-//        server?
-//            .getCharacters(withQuery: text)
-//            .subscribe(onSuccess: { [weak self] characters in
-//                guard let self = self else { return }
-//                self.dataStreamSubject.onNext((characters.items.results, false))
-//                self.isBusy.accept(false)
-//            }, onFailure: { [weak self] error in
-//                self?.dataStreamSubject.onError(error)
-//                self?.isBusy.accept(false)
-//            })
-//            .disposed(by: disposeBag)
-//    }
 }

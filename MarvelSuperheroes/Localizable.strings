@@ -9,3 +9,6 @@
 "abc" = "ABC";
 "superheroes" = "Superheroes";
 "noHeroesFound" = "No heroes found";
+"comicsLink" = "Looking for other comics of %@?";
+"detailLink" = "Want to know more about %@?";
+"wikiLink" = "Check out the wiki page of %@";

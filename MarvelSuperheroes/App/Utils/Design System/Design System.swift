@@ -37,6 +37,7 @@ final class DesignSystem {
                 }
             }
         }()
+        static let link: UIColor = UIColor.systemBlue
         static let separator: UIColor = UIColor.systemGray3
         static let background: UIColor = UIColor.systemGray6
         static let backgroundSelected: UIColor = UIColor.systemGray2
@@ -45,6 +46,7 @@ final class DesignSystem {
     enum Font {
         static let title: UIFont = UIFont.boldSystemFont(ofSize: 24)
         static let subtitle: UIFont = UIFont.systemFont(ofSize: 16)
+        static let link: UIFont = UIFont.systemFont(ofSize: 14)
     }
 }
 

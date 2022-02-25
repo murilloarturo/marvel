@@ -9,6 +9,11 @@
 		<key>public</key>
 		<string>9eeaa3aaf38cabfba481648bd647bc22</string>
 	</dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -25,11 +30,6 @@
 				</dict>
 			</array>
 		</dict>
-	</dict>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
 	</dict>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<string>YES</string>

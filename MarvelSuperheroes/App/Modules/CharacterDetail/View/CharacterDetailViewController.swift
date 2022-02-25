@@ -8,6 +8,10 @@
 import UIKit
 import RxSwift
 
+enum CharacterDetailViewAction {
+    case openURL(URL)
+}
+
 class CharacterDetailViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var collectionView: UICollectionView!
@@ -41,6 +45,7 @@ private extension CharacterDetailViewController {
     func setup() {
         imageView.setupRoundCorners(radius: 40, corners: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner])
         dataSource.collectionView = collectionView
+        dataSource.delegate = self
         bind()
 //        setupCustomBackButton()
     }
@@ -59,5 +64,12 @@ private extension CharacterDetailViewController {
                 self?.dataSource.items = items
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension CharacterDetailViewController: CharacterDetailDataSourceDelegate {
+    func didSelectAction(with url: URL?) {
+        guard let url = url else { return }
+        presenter.handle(viewAction: .openURL(url))
     }
 }

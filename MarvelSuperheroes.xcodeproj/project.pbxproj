@@ -58,6 +58,7 @@
 		696658C027C83CF500FD5C96 /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696658BE27C83CF500FD5C96 /* TitleCell.swift */; };
 		696658C127C83CF500FD5C96 /* TitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 696658BF27C83CF500FD5C96 /* TitleCell.xib */; };
 		696658C327C8438200FD5C96 /* String+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696658C227C8438200FD5C96 /* String+Utils.swift */; };
+		696658C627C846F500FD5C96 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696658C527C846F500FD5C96 /* WebViewController.swift */; };
 		69B10ACA27C56FCA00388F6F /* LocalizableString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B10AC927C56FCA00388F6F /* LocalizableString.swift */; };
 		69B10ACC27C56FE500388F6F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69B10ACB27C56FE500388F6F /* Localizable.strings */; };
 		69B10ACE27C5743700388F6F /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B10ACD27C5743700388F6F /* UIViewController+Utils.swift */; };
@@ -140,6 +141,7 @@
 		696658BE27C83CF500FD5C96 /* TitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
 		696658BF27C83CF500FD5C96 /* TitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleCell.xib; sourceTree = "<group>"; };
 		696658C227C8438200FD5C96 /* String+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utils.swift"; sourceTree = "<group>"; };
+		696658C527C846F500FD5C96 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		69B10AC927C56FCA00388F6F /* LocalizableString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableString.swift; sourceTree = "<group>"; };
 		69B10ACB27C56FE500388F6F /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		69B10ACD27C5743700388F6F /* UIViewController+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
@@ -360,6 +362,7 @@
 		6966587F27C724DE00FD5C96 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				696658C427C846D800FD5C96 /* WebView */,
 				696658B427C8358800FD5C96 /* Buttons */,
 				6966589427C7A70400FD5C96 /* Loader */,
 				6966588627C725B500FD5C96 /* FilterView */,
@@ -496,6 +499,14 @@
 				696658BF27C83CF500FD5C96 /* TitleCell.xib */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		696658C427C846D800FD5C96 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				696658C527C846F500FD5C96 /* WebViewController.swift */,
+			);
+			path = WebView;
 			sourceTree = "<group>";
 		};
 		69B10ACF27C590C300388F6F /* DI */ = {
@@ -741,6 +752,7 @@
 				696658A527C80EC900FD5C96 /* CharacterDetailFlowInteractor.swift in Sources */,
 				6913F88727C2EB15005E445B /* AppDelegate.swift in Sources */,
 				69B10AD627C5DC6A00388F6F /* EmptyCell.swift in Sources */,
+				696658C627C846F500FD5C96 /* WebViewController.swift in Sources */,
 				69B10AD127C590D000388F6F /* DependencyInjector.swift in Sources */,
 				6913F8CC27C2F4A3005E445B /* CharacterServer.swift in Sources */,
 				6913F8D027C2FB69005E445B /* ServerRequest.swift in Sources */,

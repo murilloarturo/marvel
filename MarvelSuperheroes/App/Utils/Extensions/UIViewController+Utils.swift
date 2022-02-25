@@ -46,4 +46,24 @@ extension UIViewController {
             navigationItem.rightBarButtonItem = button
         }
     }
+    
+    func presentAlert(title: String,
+                      message: String,
+                      dismissAction: String,
+                      dismissCompletion: (() -> Void)? = nil,
+                      okAction: String? = nil,
+                      okCompletion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        let dismissAction = UIAlertAction(title: dismissAction, style: .default, handler: { _ in
+            dismissCompletion?()
+        })
+        alert.addAction(dismissAction)
+        if let okAction = okAction {
+            let action = UIAlertAction(title: okAction, style: .default, handler: { _ in
+                okCompletion?()
+            })
+            alert.addAction(action)
+        }
+        present(alert, animated: true)
+    }
 }

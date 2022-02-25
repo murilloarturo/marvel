@@ -10,6 +10,7 @@ import UIKit
 enum TitleCellStyle {
     case title
     case subtitle
+    case button
     
     var font: UIFont {
         switch self {
@@ -17,11 +18,17 @@ enum TitleCellStyle {
             return DesignSystem.Font.title
         case .subtitle:
             return DesignSystem.Font.subtitle
+        case .button:
+            return DesignSystem.Font.link
         }
     }
 }
 
-typealias TitleSectionItem = (title: String, style: TitleCellStyle)
+struct TitleSectionItem {
+    var title: String
+    var style: TitleCellStyle
+    var action: URL?
+}
 
 class TitleCell: UICollectionViewCell {
     @IBOutlet private weak var label: UILabel!
@@ -36,5 +43,13 @@ class TitleCell: UICollectionViewCell {
         guard let text = item as? TitleSectionItem else { return }
         label.text = text.title
         label.font = text.style.font
+        switch text.style {
+        case .button:
+            label.textColor = DesignSystem.Color.link
+            label.textAlignment = .center
+        default:
+            label.textColor = DesignSystem.Color.label
+            label.textAlignment = .justified
+        }
     }
 }

@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 protocol CharacterDetailDataSourceDelegate: AnyObject {
-    
+    func didSelectAction(with url: URL?)
 }
 
 final class CharacterDetailDataSource: NSObject {
@@ -65,6 +65,16 @@ extension CharacterDetailDataSource: UICollectionViewDataSource {
         cell.update(with: items[safe: indexPath.row])
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let item = items[safe: indexPath.row] else { return }
+        switch item {
+        case let sectionItem as TitleSectionItem where sectionItem.style == .button:
+            delegate?.didSelectAction(with: sectionItem.action)
+        default:
+            break
+        }
+    }
 }
 
 extension CharacterDetailDataSource: UICollectionViewDelegateFlowLayout {
@@ -75,11 +85,20 @@ extension CharacterDetailDataSource: UICollectionViewDelegateFlowLayout {
         let maxWidth: CGFloat = collectionView.bounds.width
         switch item {
         case let sectionItem as TitleSectionItem:
-            let padding: CGFloat = 20
-            let height: CGFloat = sectionItem.title.height(withConstrainedWidth: maxWidth - padding, font: sectionItem.style.font)
-            return CGSize(width: maxWidth, height: height + padding)
+            return sectionItemSize(item: sectionItem, maxWidth: maxWidth)
         default:
             return .zero
+        }
+    }
+    
+    func sectionItemSize(item: TitleSectionItem, maxWidth: CGFloat) -> CGSize {
+        switch item.style {
+        case .button:
+            return CGSize(width: maxWidth, height: 50)
+        default:
+            let padding: CGFloat = 20
+            let height: CGFloat = item.title.height(withConstrainedWidth: maxWidth - padding, font: item.style.font)
+            return CGSize(width: maxWidth, height: height + padding)
         }
     }
 }

@@ -35,6 +35,7 @@ struct Character: Codable {
     let description: String
     let thumbnail: ImageURL
     let resourceURL: URL?
+    let links: [Link]
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -42,6 +43,7 @@ struct Character: Codable {
         case description
         case thumbnail
         case resourceURL = "resourceURI"
+        case links = "urls"
     }
 }
 
@@ -56,5 +58,21 @@ struct ImageURL: Codable {
     enum CodingKeys: String, CodingKey {
         case path
         case fileExtension = "extension"
+    }
+}
+
+enum LinkType: String, Codable {
+    case detail
+    case wiki
+    case comiclink
+}
+
+struct Link: Codable {
+    var type: LinkType
+    var url: URL?
+    
+    enum CodingKeys: String, CodingKey {
+        case type
+        case url
     }
 }

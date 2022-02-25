@@ -10,6 +10,7 @@ import UIKit
 enum CharacterListRoute {
     case start(presenter: CharacterListFlowPresentable)
     case showDetail(model: Character)
+    case showError(Error)
 }
 
 protocol CharacterListFlowRoutable {
@@ -30,6 +31,8 @@ final class CharacterListFlowRouter: CharacterListFlowRoutable {
             showListViewController(presenter: presenter)
         case .showDetail(let model):
             CharacterDetailFlowModule(model: model, navigation: baseViewController as? UINavigationController).start()
+        case .showError(let error):
+            baseViewController?.presentAlert(title: "Error", message: error.localizedDescription, dismissAction: "ok", dismissCompletion: nil, okAction: nil, okCompletion: nil)
         }
     }
     

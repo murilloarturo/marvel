@@ -19,6 +19,13 @@ extension UIView {
         }
     }
     
+    func bindCenter() {
+        guard let view = superview else { return }
+        translatesAutoresizingMaskIntoConstraints = false
+        view.addConstraint(NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1, constant: 0))
+        view.addConstraint(NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1, constant: 0))
+    }
+    
     func bindLayoutToSuperView() {
         guard let view = superview else { return }
         translatesAutoresizingMaskIntoConstraints = false

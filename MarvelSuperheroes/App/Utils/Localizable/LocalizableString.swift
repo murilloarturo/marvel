@@ -11,12 +11,15 @@ enum LocalizableString: String {
     case abc
     case superheroes
     case noHeroesFound
+    case comicsLink
+    case detailLink
+    case wikiLink
     
     var localized: String {
         return NSLocalizedString(rawValue, comment: "")
     }
 
-    func localized(arguments: CVarArg...) -> String {
-        return String(format: localized, arguments)
+    func localized(with arguments: [CVarArg]) -> String {
+        return String(format: localized, arguments: arguments)
     }
 }

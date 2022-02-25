@@ -13,11 +13,11 @@ protocol EndpointRequester {
 }
 
 final class EndpointNetWorker: EndpointRequester {
-    private var offset: Int = 0
-    private let limit: Int = 40
+    private(set) var offset: Int = 0
     private(set) var canLoadMore: Bool = true
-    @Dependency var server: Server?
-      
+    @Dependency private var server: Server?
+    let limit: Int = 40
+    
     func fetchData<T>(_ object: T.Type, endpoint: ServerEndpoint, params: [String : Any]) -> Single<ServerResponse<T>> where T : Decodable, T : Encodable {
         guard let server = server, canLoadMore else {
             return .just(ServerResponse<T>())

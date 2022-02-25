@@ -37,7 +37,6 @@ class ServerTests: XCTestCase {
                                           headers: nil)
         
         let requestSingle: Single<ServerResponse<NetworkTestModel>> = sut.single(request: request)
-        
         requestSingle
             .subscribe(onSuccess: { response in
                 XCTFail("This flow should never happen as json is invalid")
@@ -47,7 +46,7 @@ class ServerTests: XCTestCase {
                 exp.fulfill()
             })
             .disposed(by: disposeBag)
-        wait(for: [exp], timeout: 1.0)
+        wait(for: [exp], timeout: 5.0)
     }
     
     func testSimpleRequest() {
@@ -72,6 +71,6 @@ class ServerTests: XCTestCase {
                 exp.fulfill()
             })
             .disposed(by: disposeBag)
-        wait(for: [exp], timeout: 1.0)
+        wait(for: [exp], timeout: 5.0)
     }
 }

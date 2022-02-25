@@ -72,6 +72,9 @@
 		6971C5D327C8A0F600938956 /* json_mock.json in Resources */ = {isa = PBXBuildFile; fileRef = 6971C5D227C8A0F600938956 /* json_mock.json */; };
 		6971C5D727C8A17900938956 /* NetworkTestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6971C5D627C8A17900938956 /* NetworkTestModel.swift */; };
 		6971C5D927C8A45300938956 /* characters.json in Resources */ = {isa = PBXBuildFile; fileRef = 6971C5D827C8A45300938956 /* characters.json */; };
+		6971C5DB27C8A58400938956 /* ServerRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6971C5DA27C8A58400938956 /* ServerRequestTests.swift */; };
+		6971C5DD27C8AC7800938956 /* ServerNetworkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6971C5DC27C8AC7800938956 /* ServerNetworkerTests.swift */; };
+		6971C5DF27C8B4BC00938956 /* EndpointNetworkerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6971C5DE27C8B4BC00938956 /* EndpointNetworkerMock.swift */; };
 		69B10ACA27C56FCA00388F6F /* LocalizableString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B10AC927C56FCA00388F6F /* LocalizableString.swift */; };
 		69B10ACC27C56FE500388F6F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69B10ACB27C56FE500388F6F /* Localizable.strings */; };
 		69B10ACE27C5743700388F6F /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B10ACD27C5743700388F6F /* UIViewController+Utils.swift */; };
@@ -169,6 +172,9 @@
 		6971C5D227C8A0F600938956 /* json_mock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = json_mock.json; sourceTree = "<group>"; };
 		6971C5D627C8A17900938956 /* NetworkTestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTestModel.swift; sourceTree = "<group>"; };
 		6971C5D827C8A45300938956 /* characters.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = characters.json; sourceTree = "<group>"; };
+		6971C5DA27C8A58400938956 /* ServerRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRequestTests.swift; sourceTree = "<group>"; };
+		6971C5DC27C8AC7800938956 /* ServerNetworkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerNetworkerTests.swift; sourceTree = "<group>"; };
+		6971C5DE27C8B4BC00938956 /* EndpointNetworkerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointNetworkerMock.swift; sourceTree = "<group>"; };
 		69B10AC927C56FCA00388F6F /* LocalizableString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableString.swift; sourceTree = "<group>"; };
 		69B10ACB27C56FE500388F6F /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		69B10ACD27C5743700388F6F /* UIViewController+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
@@ -549,6 +555,7 @@
 			isa = PBXGroup;
 			children = (
 				6971C5C227C88CDE00938956 /* CharacterListTests.swift */,
+				6971C5DE27C8B4BC00938956 /* EndpointNetworkerMock.swift */,
 			);
 			path = "Character List";
 			sourceTree = "<group>";
@@ -577,6 +584,8 @@
 				6971C5D427C8A15100938956 /* Utils */,
 				6971C5D127C8A0BF00938956 /* Mocks */,
 				6971C5CD27C89F2C00938956 /* ServerTests.swift */,
+				6971C5DA27C8A58400938956 /* ServerRequestTests.swift */,
+				6971C5DC27C8AC7800938956 /* ServerNetworkerTests.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -869,12 +878,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6971C5DD27C8AC7800938956 /* ServerNetworkerTests.swift in Sources */,
 				6971C5D727C8A17900938956 /* NetworkTestModel.swift in Sources */,
+				6971C5DF27C8B4BC00938956 /* EndpointNetworkerMock.swift in Sources */,
 				6971C5C327C88CDE00938956 /* CharacterListTests.swift in Sources */,
 				6971C5C627C8914D00938956 /* DITests.swift in Sources */,
 				6971C5CE27C89F2C00938956 /* ServerTests.swift in Sources */,
 				6971C5CB27C89D9D00938956 /* LocalizableTests.swift in Sources */,
 				6971C5D027C8A04600938956 /* NetworkMockUtils.swift in Sources */,
+				6971C5DB27C8A58400938956 /* ServerRequestTests.swift in Sources */,
 				6971C5C827C893C200938956 /* MockClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

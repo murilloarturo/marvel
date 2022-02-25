@@ -35,10 +35,11 @@ struct ServerRequestParams {
         let time: String = "\(Date().timeIntervalSince1970)"
         let privateKey = ServerKeys.private.get(from: dictionary) ?? ""
         let publicKey = ServerKeys.public.get(from: dictionary) ?? ""
-        params["apikey"] = publicKey
-        params["ts"] = time
-        params["hash"] = "\(time)\(privateKey)\(publicKey)".generateMD5()
-        
+        if !publicKey.isEmpty && !privateKey.isEmpty {
+            params["apikey"] = publicKey
+            params["ts"] = time
+            params["hash"] = "\(time)\(privateKey)\(publicKey)".generateMD5()
+        }
         return params
     }
 }

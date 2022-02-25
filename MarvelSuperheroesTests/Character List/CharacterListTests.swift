@@ -6,28 +6,51 @@
 //
 
 import XCTest
+import RxSwift
+import RxBlocking
 @testable import MarvelSuperheroes
 
 class CharacterListTests: XCTestCase {
+    private var disposeBag: DisposeBag!
+    var sut: CharacterListFlowInteractor!
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
+    override func setUp() {
+        super.setUp()
         
+        disposeBag = DisposeBag()
+        DependencyContainer.registerBuilder(for: EndpointRequester.self) {
+            let mock = EndpointNetworkerMock()
+            return mock
+        }
+        sut = CharacterListFlowInteractor()
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        
+        disposeBag = nil
+    }
+    
+    func testInteractor() {
+        let mock = EndpointNetworkerMock()
+        mock.items = [Character(id: 0, name: "", description: "", thumbnail: ImageURL(path: "", fileExtension: ""), resourceURL: nil, links: []), Character(id: 0, name: "", description: "", thumbnail: ImageURL(path: "", fileExtension: ""), resourceURL: nil, links: [])]
+        DependencyContainer.registerBuilder(for: EndpointRequester.self) {
+            return mock
+        }
+        sut = CharacterListFlowInteractor()
+        XCTAssertTrue(sut.canLoadMore)
+        let data = sut.dataStream.toBlocking(timeout: 5)
+        let items = try? data.first()?.items
+        XCTAssertEqual(items?.count, 2)
+        mock.canLoadMore = false
+        XCTAssertFalse(sut.canLoadMore)
+        
+        mock.canLoadMore = true
+        mock.items = []
+        sut.search("HELLO")
+        let searchData = sut.dataStream.toBlocking(timeout: 5)
+        let newItems = try? searchData.first()?.items
+        XCTAssertEqual(newItems?.count, 0)
     }
 
 }

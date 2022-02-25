@@ -21,6 +21,11 @@ final class DependencyContainer {
     private var dependencies = [String: (AnyObject)]()
     private static var shared = DependencyContainer()
 
+    static func clear() {
+        shared.dependencyBuilders = [:]
+        shared.dependencies = [:]
+    }
+    
     static func register<T>(_ dependency: T) {
         shared.register(dependency)
     }

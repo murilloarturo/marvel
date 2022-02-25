@@ -28,6 +28,7 @@
 
 |*Branch*|Environment|
 | --- | --- |
+|**[main](https://github.com/murilloarturo/marvel)** |*(Production)*|
 |**[develop](https://github.com/murilloarturo/marvel/tree/develop)** |*(Develop)*|
   
   *Methodology*

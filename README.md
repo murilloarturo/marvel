@@ -2,6 +2,10 @@
 
 ## iOS App
 
+![Simulator Screen Shot - iPhone 13 Pro - 2022-02-25 at 03 25 14](https://user-images.githubusercontent.com/3260095/155673160-13150c89-2e17-48e9-87a9-a36e78024de0.png)
+![Simulator Screen Shot - iPhone 13 Pro - 2022-02-25 at 03 25 20](https://user-images.githubusercontent.com/3260095/155673175-0f77a090-6f40-48d3-bfff-3b40093f8c8f.png)
+![Simulator Screen Shot - iPhone 13 Pro - 2022-02-25 at 03 25 46](https://user-images.githubusercontent.com/3260095/155673190-5cea8016-b718-495d-a723-cc0525a92549.png)
+
 ### Requirements
 | Platform | Minimum Swift Version | Installation | Current Version |
 | --- | --- | --- | --- |
@@ -35,11 +39,3 @@
 
   ![Viper](https://www.objc.io/images/issue-13/2014-06-07-viper-intro_0a53d9f.jpg)
 
-
-### Screenshots
-
-![Simulator Screen Shot - iPhone 13 Pro - 2022-02-25 at 03 25 14](https://user-images.githubusercontent.com/3260095/155672910-12d1b25e-2b3d-4ae6-b976-1249a6ff4d21.png)
-
-![Simulator Screen Shot - iPhone 13 Pro - 2022-02-25 at 03 25 20](https://user-images.githubusercontent.com/3260095/155672938-187be67c-eb8e-4075-b7f4-23498eaefb6f.png)
-
-![Simulator Screen Shot - iPhone 13 Pro - 2022-02-25 at 03 25 46](https://user-images.githubusercontent.com/3260095/155672972-6432ca1e-3b1e-49bb-8c18-654b40a863a6.png)

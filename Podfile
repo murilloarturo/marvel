@@ -25,6 +25,7 @@ target 'MarvelSuperheroes' do
     inherit! :search_paths
     pod 'RxBlocking', '6.5.0'
     pod 'RxTest', '6.5.0'
+    pod 'OHHTTPStubs/Swift'
   end
 end
 
